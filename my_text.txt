@@ -1,0 +1,9 @@
+hello LEET !
+this is just a test
+a test for my function
+GeT_NeXt_LiNe
+Soo
+is working ??
+how many lines did it print 
+hein ?
+
