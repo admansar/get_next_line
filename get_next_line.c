@@ -6,7 +6,7 @@
 /*   By: admansar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 18:57:18 by admansar          #+#    #+#             */
-/*   Updated: 2022/11/28 19:11:29 by admansar         ###   ########.fr       */
+/*   Updated: 2022/11/29 14:07:30 by admansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,24 @@ char	*get_save(char *save)
 		i++;
 	if (save[i] == '\n')
 		i++;
-		s = malloc(sizeof(char) * ft_strlen(save) - i + 1);
+	if(save[i] == '\0')
+	{
+		free(save);
+		return(NULL);
+	}
+	s = malloc(sizeof(char) * ft_strlen(save) - i + 1);
+	if (!s)
+		return (NULL);
 	while (save[i])
 	{
 		s[j++] = save[i++];
 	}
 	s[j] = '\0';
+	free(save);
 	return (s);
 }
 
-char	*get_line(char *save)
+char	*get_the_line(char *save)
 {
 	int		i;
 	char	*s;
@@ -70,14 +78,27 @@ char	*get_read(int fd, char *save)
 	c = 1;
 	looper = 1;
 	ptr = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!ptr)
+		return (NULL);
 	while (c > 0 && looper == 1)
 	{
 		c = read(fd, ptr, BUFFER_SIZE);
+		if(c == 0)
+			break;
+		if(c < 0 && save)
+		{
+			free(save);
+			save = NULL;
+			break;
+		}
+		else if(c < 0)
+			break;
 		ptr[c] = '\0';
 		save = ft_strjoin(save, ptr);
 		if (ft_strchr(save, '\n'))
 			looper = 0;
 	}
+	free(ptr);
 	return (save);
 }
 
@@ -86,10 +107,12 @@ char	*get_next_line(int fd)
 	static char	*save;
 	char		*line;
 
-	save = get_read(fd, save);
+	if (fd == 1 || fd == 2 || BUFFER_SIZE < 0 || fd < 0)
+		return (NULL);
+	save = get_read (fd, save);
 	if (!save)
 		return (NULL);
-	line = get_line(save);
+	line = get_the_line(save);
 	save = get_save(save);
 	return (line);
 }

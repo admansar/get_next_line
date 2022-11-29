@@ -6,7 +6,7 @@
 /*   By: admansar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 19:12:58 by admansar          #+#    #+#             */
-/*   Updated: 2022/11/28 19:16:12 by admansar         ###   ########.fr       */
+/*   Updated: 2022/11/28 21:51:04 by admansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		ft_strlen(char *s);
 char	*ft_strdup(char *s);
 char	*ft_strchr(const char *s, int c);
 char	*get_save(char *save);
-char	*get_line(char *save);
+char	*get_the_line(char *save);
 char	*ft_strjoin(char *s1, char *s2);
 char	*get_read(int fd, char *save);
 char	*get_next_line(int fd);
