@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: admansar <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/28 18:57:18 by admansar          #+#    #+#             */
-/*   Updated: 2022/12/07 10:32:58 by admansar         ###   ########.fr       */
+/*   Created: 2022/12/08 16:53:05 by admansar          #+#    #+#             */
+/*   Updated: 2022/12/08 17:16:49 by admansar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
+#include <limits.h>
 
 char	*get_save(char *save)
 {
@@ -98,15 +99,15 @@ char	*get_read(int fd, char *save)
 
 char	*get_next_line(int fd)
 {
-	static char	*save;
 	char		*line;
+	static char	*save[OPEN_MAX];
 
-	if (fd == 1 || fd == 2 || BUFFER_SIZE <= 0 || fd < 0)
+	if (fd < 0 || fd == 1 || fd == 2 || BUFFER_SIZE <= 0)
 		return (NULL);
-	save = get_read (fd, save);
-	if (!save)
+	save[fd] = get_read(fd, save[fd]);
+	if (!save[fd])
 		return (NULL);
-	line = get_the_line(save);
-	save = get_save(save);
+	line = get_the_line(save[fd]);
+	save[fd] = get_save(save[fd]);
 	return (line);
 }
